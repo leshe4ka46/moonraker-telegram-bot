@@ -87,7 +87,19 @@ class Klippy:
             message += f"State message: {webhook['state_message']}\n"
         message += emoji.emojize(':mechanical_arm: Printing process status: ', use_aliases=True) + f"{print_stats['state']} \n"
         # if print_stats['state'] in ('printing', 'paused', 'complete'):
-        message += f"Extruder temp.: {round(resp['extruder']['temperature'])}, Bed temp.: {round(resp['heater_bed']['temperature'])}\n"
+        
+        message += f"Extruder temp.: {round(resp['extruder']['temperature'])}"
+        if resp['extruder']['target']:
+           message += f"\u2192 {round(resp['extruder']['target'])}\n"
+        else:
+           message += f"\n"
+        
+        message += f"Bed temp.: {round(resp['heater_bed']['temperature'])}"
+        if resp['heater_bed']['target']:
+          message += f"\u2192 {round(resp['heater_bed']['target'])}\n"
+        else:
+          message += f"\n"
+        
         if print_stats['state'] == 'printing':
             if not self.printing_filename:
                 self.printing_filename = print_stats['filename']
