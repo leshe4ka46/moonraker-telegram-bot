@@ -1,37 +1,121 @@
-## Welcome to GitHub Pages
+# moonraker-telegram-bot
 
-You can use the [editor on GitHub](https://github.com/leshe4ka46/moonraker-telegram-bot/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+The general idea of this project is to provide you with a way to control and monitor your printer without having to setup a vpn, opening your home network, or doing any sort of other network-related vodoo.
+In addition you get the benefits of push-style notifications always in your pocket, and a bandwidth-friendly way to check up on your print progress, when not near the printer.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+As always with solutions like these, we kindly remind you not to print unattended, and always to take all necessary precautions against fire hazards.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+## Features
+- Printing progress notifications at custom intervals with pictures from a webstream/webcam
+- Light control for pictures and videos, confiugurable delay for camera adjustment
+- Configurable timelapsing 
+- Configurable keyboard for easy control without command typing in the bot
+- Power device control for PSU/MCU control via moonraker
+- Sampling of photos/videos/gifs on request at any time
+- Pause, Cancel, Resume with a double confirmation 
+- Emergency stop with a double confirmation
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+## Currently available commands:
 
-1. Numbered
-2. List
+These are the commands, which are currently available in the bot. Most of them are configurable according to the manual.
+All commands are available on the bot keyboard, unused commands can be hidden via config.
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+	/status		- get the status (printing, paused, error) of the printer
+	/pause		- pause the current print
+	/resume		- resume the current print
+	/cancel		- cancel the current print
+	/files		- get the last 5 .gcode files, and the option to print them
+	/photo 		- capture a picture from the webstream/webcam
+	/video 		- capture a video from the webstream/webcam
+	/gif 		- capture a gif from the webstream/webcam
+	/poweroff	- turn off a specified moonraker power device
+	/light		- toggle a specified moonraker power device
+	/emergency	- run an emergency stop
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Installation, configuration and updating
 
-### Jekyll Themes
+When installing the bot for the first time, simply clone this distro. 
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/leshe4ka46/moonraker-telegram-bot/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```
+cd ~
+git clone https://github.com/nlef/moonraker-telegram-bot.git
+cd moonraker-telegram-bot
+```
 
-### Support or Contact
+When the process is done, run the install script:
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+```
+./install.sh
+```
+
+You will get asked, where to place the configuration file to. It is recommended to place it in the same catalog, where klipper configs are located, for ease of access and backup.
+You can check on all the parameters and what they do in the [config_sample](docs/config_sample.md). As with klipper, start with the minimum, and expand the functionality based on your needs.
+
+Before you can start using the bot you will have to create and configure a telegram bot.
+The process is straightforward and is explained in the 'config_sample' in more detail. 
+
+
+To update the bot, we recommend simply using the moonraker update manager. This is explained in detail on [moonraker update manager page](https://moonraker.readthedocs.io/en/latest/configuration/#update_manager/).
+Here is the section needed:
+
+```
+[update_manager client moonraker-telegram-bot]
+type: git_repo
+path: ~/moonraker-telegram-bot
+origin: https://github.com/nlef/moonraker-telegram-bot.git
+env: ~/moonraker-telegram-bot-env/bin/python
+requirements: requirements.txt
+install_script: install.sh
+```
+
+Alternatively you can update by hand at your own risk, by doing a pull and running the install.sh again.
+Please understand, that entering commands into the console takes a certain amount of knowledge and is your own responsibility.
+
+
+When tweaking the bot, remember that you have to restart the service every time you change the config:
+`sudo systemctl restart moonraker-telegram-bot`
+
+Moonraker [history] component must be configured
+
+## Issues and bug reports
+
+We will be happy to assist you with any issues that you have, as long as you can form a coherent sentence and are polite in your requests.
+Please write an issue, and we will try our best to reproduce and fix it.
+Feature requests and ideas are also more than welcome.
+
+When writing issues/contacting for support please attach the 'telegram.log' as well as the output of `sudo journalctl -r -u moonraker-telegram-bot`
+
+
+
+
+### Happy Printing!
+
+
+
+
+
+---
+
+**Klipper** by [KevinOConnor](https://github.com/KevinOConnor) :
+
+https://github.com/KevinOConnor/klipper
+
+---
+
+
+**Moonraker** by [Arksine](https://github.com/Arksine) :
+
+https://github.com/Arksine/moonraker
+
+---
+
+**Fluidd Webinterface** by [cadriel](https://github.com/cadriel) :
+
+https://github.com/cadriel/fluidd
+
+---
